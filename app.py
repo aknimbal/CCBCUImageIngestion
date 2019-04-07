@@ -26,6 +26,22 @@ app = Flask(__name__)
 def home():         
     azureQueueAccountName = "ccbcustorage"
     azureQueueKey = "9Mg7JNNHVukysJgENg7XkWcf3egUgwNfQq25qZqftKkBR5IK1pzOiPSd9cb5cYS493aB5MwlHswVTMRJmD15cQ=="
-    azureQueueAnalysisResults = "analysis-process-new"
+    azureQueueAnalysisResults = "analysis-process-akshay"
     queue_service = azconn.load(azureQueueAccountName, azureQueueKey,azureQueueAnalysisResults)
+    azconn.put_in_queue(queue_service,azureQueueAnalysisResults,page_parse())
+    #boot up an instance of AKS to process queue items
+    
     return("CCBCU Image ingestion service with queue using facet...!!!")
+
+
+def page_parse():
+    page_list = []
+    page_list.append('https://pybuildproduct.azurewebsites.net/getpages')
+    base_url = 'https://pybuildproduct.azurewebsites.net/getpages'
+    base = "https://services.traxretail.com"
+    apikey = ""
+    headers = {"Authorization": apikey}
+    r = requests.get(base_url, headers=headers)
+    page_list.append('https://pybuildproduct.azurewebsites.net/getpages2')
+
+    return page_list
